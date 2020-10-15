@@ -23,7 +23,7 @@ def print_with_requestid(value: str):
 
     if not value:
         return
-    print(g.request_id)
+    pprint(g.request_id)
     req_id = g.request_id if 'request_id' in g else ''
     if not req_id:
         g.request_id = uuid.uuid4().hex
