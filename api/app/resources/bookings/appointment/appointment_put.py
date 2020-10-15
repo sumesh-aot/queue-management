@@ -23,7 +23,8 @@ from app.utilities.snowplow import SnowPlow
 from app.utilities.auth_util import is_public_user
 from app.utilities.auth_util import Role, has_any_role
 from app.utilities.email import send_email, get_confirmation_email_contents
-from app.utilities.logger_util import print_with_requestid
+from pprint import pprint
+import uuid
 from threading import Thread
 from app.services import AvailabilityService
 from dateutil.parser import parse
@@ -93,7 +94,7 @@ class AppointmentPut(Resource):
         # Send confirmation email
         @copy_current_request_context
         def async_email(subject, email, sender, body):
-            print_with_requestid('Sending email for appointment update')
+            pprint(uuid.uuid4().hex(), 'Sending email for appointment update')
             send_email(subject, email, sender, body)
 
         thread = Thread(target=async_email, args=get_confirmation_email_contents(appointment, office, office.timezone, user))

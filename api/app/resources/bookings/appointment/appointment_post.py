@@ -27,12 +27,12 @@ from app.schemas.theq import CitizenSchema
 from app.utilities.auth_util import Role, has_any_role
 from app.utilities.auth_util import is_public_user
 from app.utilities.email import get_confirmation_email_contents, send_email, get_blackout_email_contents
-from app.utilities.logger_util import print_with_requestid
+from pprint import pprint
+import uuid
 from app.utilities.snowplow import SnowPlow
 from qsystem import api, api_call_with_retry, db, oidc, my_print
 from app.services import AvailabilityService
 from dateutil.parser import parse
-from pprint import pprint
 
 
 @api.route("/appointments/", methods=["POST"])
@@ -110,6 +110,7 @@ class AppointmentPost(Resource):
         if warning:
             logging.warning("WARNING: %s", warning)
             return {"message": warning}, 422
+        request_id = uuid.uuid4().hex()
 
         if appointment.office_id == office_id:
             appointment.citizen_id = citizen.citizen_id
@@ -128,7 +129,7 @@ class AppointmentPost(Resource):
                         # Send blackout email
                         @copy_current_request_context
                         def async_email(subject, email, sender, body):
-                            print_with_requestid('Sending email for appointment cancellation due to blackout')
+                            pprint(request_id, 'Sending email for appointment cancellation due to blackout')
                             return send_email(subject, email, sender, body)
 
                         thread = Thread(target=async_email, args=get_blackout_email_contents(appointment, cancelled_appointment, office, timezone, user))
@@ -143,7 +144,7 @@ class AppointmentPost(Resource):
                 # Send confirmation email
                 @copy_current_request_context
                 def async_email(subject, email, sender, body):
-                    print_with_requestid('Sending email for appointment confirmation')
+                    pprint(request_id, 'Sending email for appointment confirmation')
                     send_email(subject, email, sender, body)
 
                 thread = Thread(target=async_email, args=get_confirmation_email_contents(appointment, office, office.timezone, user))
