@@ -23,9 +23,11 @@ def print_with_requestid(value: str):
 
     if not value:
         return
-    pprint(g.request_id)
     req_id = g.request_id if 'request_id' in g else ''
-    if not req_id:
+    pprint('Request ID ', req_id)
+
+    if req_id is None:
         g.request_id = uuid.uuid4().hex
+        pprint('g.request_id ', g.request_id)
         req_id = g.request_id
     pprint(f'{req_id} - {value}')
