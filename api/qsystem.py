@@ -4,9 +4,11 @@ import time
 import traceback
 import os
 import datetime
+import uuid
 
 from config import configure_app, configure_logging, debug_level_to_debug_string
 from flask import Flask
+from flask import g
 from flask_admin import Admin
 from flask_caching import Cache
 from flask_compress import Compress
@@ -383,3 +385,9 @@ def after_cursor_execute(conn, cursor, statement,
 def apply_header(response):
     response.headers["X-Node-Hostname"] = hostname
     return response
+
+
+@application.before_request
+def before_request():
+    """Add pre request details."""
+    g.request_id = uuid.uuid4().hex

@@ -18,6 +18,7 @@ from flask_login import current_user
 import enum
 from flask_admin.form.fields import Select2Field
 from qsystem import db, socketio
+from app.utilities.logger_util import print_with_requestid
 
 
 class MultipleSelect2Field(Select2Field):
@@ -132,8 +133,8 @@ class TimeslotConfig(Base):
 
     def on_model_change(self, form, model, is_created):
         """Invoked on model change."""
+        print_with_requestid('Emitting update_offices_cache')
         socketio.emit('update_offices_cache')
-
 
 
 TimeslotModelView = TimeslotConfig(TimeSlot, db.session)

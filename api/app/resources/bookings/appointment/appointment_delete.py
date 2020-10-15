@@ -23,6 +23,7 @@ from app.schemas.bookings import AppointmentSchema
 from app.utilities.auth_util import Role, has_any_role
 from app.utilities.auth_util import is_public_user
 from app.utilities.email import get_cancel_email_contents, send_email
+from app.utilities.logger_util import print_with_requestid
 from app.utilities.snowplow import SnowPlow
 from qsystem import api, db, oidc
 
@@ -60,6 +61,7 @@ class AppointmentDelete(Resource):
             # Send blackout email
             @copy_current_request_context
             def async_email(subject, email, sender, body):
+                print_with_requestid('Sending email for appointment cancellation')
                 send_email(subject, email, sender, body)
 
             thread = Thread(target=async_email, args=get_cancel_email_contents(appointment, user, office, office.timezone))
