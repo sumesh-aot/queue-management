@@ -23,7 +23,7 @@ def print_with_requestid(value: str):
 
     if not value:
         return
-    req_id = g.request_id if 'request_id' in g else ''
+    req_id = g.request_id if 'request_id' in g else None
     pprint('Request ID ', req_id)
 
     if req_id is None:
