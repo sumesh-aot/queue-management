@@ -62,7 +62,7 @@ class AppointmentDelete(Resource):
             # Send blackout email
             @copy_current_request_context
             def async_email(subject, email, sender, body):
-                pprint(uuid.uuid4().hex(), 'Sending email for appointment cancellation')
+                pprint(uuid.uuid4().hex, 'Sending email for appointment cancellation')
                 send_email(subject, email, sender, body)
 
             thread = Thread(target=async_email, args=get_cancel_email_contents(appointment, user, office, office.timezone))

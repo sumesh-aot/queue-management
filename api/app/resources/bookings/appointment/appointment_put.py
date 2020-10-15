@@ -94,7 +94,7 @@ class AppointmentPut(Resource):
         # Send confirmation email
         @copy_current_request_context
         def async_email(subject, email, sender, body):
-            pprint(uuid.uuid4().hex(), 'Sending email for appointment update')
+            pprint(uuid.uuid4().hex, 'Sending email for appointment update')
             send_email(subject, email, sender, body)
 
         thread = Thread(target=async_email, args=get_confirmation_email_contents(appointment, office, office.timezone, user))

@@ -110,7 +110,7 @@ class AppointmentPost(Resource):
         if warning:
             logging.warning("WARNING: %s", warning)
             return {"message": warning}, 422
-        request_id = uuid.uuid4().hex()
+        request_id = uuid.uuid4().hex
 
         if appointment.office_id == office_id:
             appointment.citizen_id = citizen.citizen_id
