@@ -29,5 +29,5 @@ def print_with_requestid(value: str):
     if req_id is None:
         g.request_id = uuid.uuid4().hex
         pprint('g.request_id ', g['request_id'])
-        req_id = g['request_id']d
+        req_id = g['request_id']
     pprint(f'{req_id} - {value}')
