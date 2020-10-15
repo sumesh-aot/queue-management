@@ -15,6 +15,7 @@ limitations under the License.'''
 from pprint import pprint
 
 from flask import g
+import uuid
 
 
 def print_with_requestid(value: str):
@@ -23,5 +24,8 @@ def print_with_requestid(value: str):
     if not value:
         return
     print(g.request_id)
-    req_id = g['request_id'] if 'request_id' in g else ''
+    req_id = g.request_id if 'request_id' in g else ''
+    if not req_id:
+        g.request_id = uuid.uuid4().hex
+        req_id = g.request_id
     pprint(f'{req_id} - {value}')

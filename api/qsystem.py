@@ -386,9 +386,9 @@ def apply_header(response):
     response.headers["X-Node-Hostname"] = hostname
     return response
 
-
-@application.before_request
-def before_request():
-    """Add pre request details."""
-    print('Here before request')
-    g.request_id = uuid.uuid4().hex
+#
+# @application.before_request
+# def before_request():
+#     """Add pre request details."""
+#     print('Here before request')
+#     g.request_id = uuid.uuid4().hex
