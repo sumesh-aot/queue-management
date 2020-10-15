@@ -67,7 +67,7 @@ class Appointment(Base):
             outerjoin(PublicUser, PublicUser.user_id == Citizen.user_id). \
             filter(func.date_trunc('day',
                                    func.timezone(Timezone.timezone_name, Appointment.start_time)) ==
-                   func.date_trunc('day',  tomorrow))
+                   tomorrow.strftime("%Y-%m-%d 00:00:00"))
 
         return query.all()
 
